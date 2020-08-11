@@ -30,7 +30,7 @@ class _GameScreenState extends State<GameScreen> {
 
   initWord() async {
 
-    if(visibleList.length>0){refresh();}
+    if(visibleList.length>0||wrongWordList.length>0){refresh();}
 
     var word = Constants.getWord(await Constants.readWords()).trim();
     print(word);
@@ -45,7 +45,6 @@ class _GameScreenState extends State<GameScreen> {
   refresh() {
     setState(() {
       hangMan = "3";
-      highScore = 0;
       hint = "";
       currentWord = '';
       currentWordList = [];
@@ -154,37 +153,31 @@ class _GameScreenState extends State<GameScreen> {
   showFalseLetterAdded(String letter) {
 
     if(lives != 0) {
-      if (hangManLevel == 6) {
+      if (wrongWordList.length >= 6) {
         // game over
         setState(() {
           lives -= 1;
         });
-        addBodyPart();
-        Future.delayed(Duration(seconds: 2)).then((value) {
-          initWord();
-        });
 
-      } else {
-        if(wrongWordList.length == currentWordList.length){
-          setState(() {
-            hangManLevel = 7;
-            setState(() {
-              lives -= 1;
-            });
-            addBodyPart();
-            Future.delayed(Duration(seconds: 2)).then((value) {
-              initWord();
-            });
-          });
+        if(lives == 0){
+          showGameOver();
         } else {
-          setState(() {
-            hangManLevel += 1;
-            if (!visibleList.contains(letter)) {
-              wrongWordList.add(letter);
-              addBodyPart();
-            }
+
+
+          addBodyPart(number: 10);
+
+          Future.delayed(Duration(seconds: 1)).then((value) {
+
+            initWord();
           });
         }
+
+      } else {
+          setState(() {
+              wrongWordList.add(letter);
+              addBodyPart();
+          });
+
       }
     } else {
       showGameOver();
@@ -201,9 +194,15 @@ class _GameScreenState extends State<GameScreen> {
     print('game over');
   }
 
-  addBodyPart() {
-    setState(() {
-      hangMan = (int.parse(hangMan)+1).toString();
-    });
+  addBodyPart({int number}) {
+    if(number == null) {
+      setState(() {
+        hangMan = (int.parse(hangMan) + 1).toString();
+      });
+    } else{
+      setState(() {
+        hangMan = (number).toString();
+      });
+    }
   }
 }
