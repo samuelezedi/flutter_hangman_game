@@ -6,38 +6,52 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Text('HANGMAN',style: TextStyle(color: Colors.black),),
-          SizedBox(height: 20,),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.black,
+      body: Center(
+        child: Column(
+          children: [
+
+            SizedBox(height: 50,),
+
+            Text('HANGMAN',style: TextStyle(color: Colors.black,fontSize: 35),),
+            SizedBox(height: 20,),
+            Expanded(
+              child: Container(),
             ),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.black,
               ),
-              color: Colors.black,
-              child: Text('Start Game',style: TextStyle(color: Colors.white),),
-            ),
-          ),
-          SizedBox(height: 20,),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.black,
-            ),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
+              child: RaisedButton(
+                onPressed: (){
+                  Navigator.pushNamed(context, 'gameScreen');
+                },
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)
+                ),
+                color: Colors.black,
+                child: Text('Start Game',style: TextStyle(color: Colors.white),),
               ),
-              color: Colors.black,
-              child: Text('High Scores',style: TextStyle(color: Colors.white),),
             ),
-          ),
-        ],
+            SizedBox(height: 20,),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.black,
+              ),
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)
+                ),
+                color: Colors.black,
+                child: Text('High Scores',style: TextStyle(color: Colors.white),),
+              ),
+            ),
+            Expanded(
+              child: Container(),
+            ),
+          ],
+        ),
       ),
     );
   }
