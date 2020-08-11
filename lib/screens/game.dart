@@ -15,6 +15,7 @@ class _GameScreenState extends State<GameScreen> {
   String hint = "";
   String currentWord = '';
   List<String> currentWordList = [];
+  List<String> actualWordList = [];
   List<String> visibleList = [];
   List<String> wrongWordList = [];
   List<String> keyboardLetters = [];
@@ -31,17 +32,13 @@ class _GameScreenState extends State<GameScreen> {
 
     if(visibleList.length>0){refresh();}
 
-    var word = Constants.getWord(await Constants.readWords());
+    var word = Constants.getWord(await Constants.readWords()).trim();
     print(word);
     setState(() {
       currentWord = word;
-      var w = word.split("");
-      w.removeAt(w.length-1); //remove last empty string
-      currentWordList = w;
-      var key = Constants.letters.split("");
-      print(key);
-      key.removeAt(key.length-1);
-      keyboardLetters = key;
+      currentWordList = word.split("");
+      actualWordList = word.split("").toSet().toList();
+      keyboardLetters = Constants.letters.split("");
     });
   }
 
@@ -52,6 +49,7 @@ class _GameScreenState extends State<GameScreen> {
       hint = "";
       currentWord = '';
       currentWordList = [];
+      actualWordList = [];
       visibleList = [];
       wrongWordList = [];
       hangManLevel = 0;
@@ -135,12 +133,13 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   validateLetter(String letter) {
-    if(visibleList.length != currentWordList.length) {
+    if(visibleList.length != actualWordList.length) {
       if (currentWordList.contains(letter)) {
         setState(() {
           visibleList.add(letter);
         });
-        if(visibleList.length == currentWordList.length){
+        print(visibleList.length == currentWordList.length);
+        if(visibleList.length == actualWordList.length){
           initWord();
           addScore();
         }
