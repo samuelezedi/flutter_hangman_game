@@ -333,8 +333,9 @@ class _GameScreenState extends State<GameScreen> {
         });
         print(visibleList.length == currentWordList.length);
         if (visibleList.length == actualWordList.length) {
-          showCorrectWordDialog(failed: true);
+          showCorrectWordDialog();
           Future.delayed(Duration(seconds: 3)).then((value) {
+            Navigator.pop(context);
             initWord();
             addScore();
           });

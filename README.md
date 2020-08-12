@@ -1,16 +1,10 @@
-# flutter_hangman_game
+# Flutter HangMan Game
 
-A new Flutter application.
+A simple and efficient Hangman game built with flutter
+will soon be placed on playstore and appstore, for now you can fork or clone the code
+and pull requests are welcomed.
 
-## Getting Started
+| Home | Select API | Shortener Notif. | link Qrcode | HomeScreen List |
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+| <image width="200" src="https://raw.githubusercontent.com/samuelezedi/uree_url_shortener/master/assets/images/uree-1.png"> | <image width="200" src="https://raw.githubusercontent.com/samuelezedi/uree_url_shortener/master/assets/images/uree-2.png"> | <image width="200" src="https://raw.githubusercontent.com/samuelezedi/uree_url_shortener/master/assets/images/uree-3.png"> | <image width="200" src="https://raw.githubusercontent.com/samuelezedi/uree_url_shortener/master/assets/images/uree-4.png"> | <image width="200" src="https://raw.githubusercontent.com/samuelezedi/uree_url_shortener/master/assets/images/uree-5.png"> |
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
