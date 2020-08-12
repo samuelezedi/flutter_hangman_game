@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hangman_game/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +14,8 @@ class _GameScreenState extends State<GameScreen> {
   String hangMan = "3";
   int lives = 5;
   int highScore = 0;
-  String hint = "";
+  List<String> hint = [];
+  bool hintAccess = true;
   String currentWord = '';
   List<String> currentWordList = [];
   List<String> actualWordList = [];
@@ -45,7 +49,7 @@ class _GameScreenState extends State<GameScreen> {
   void refresh() {
     setState(() {
       hangMan = "3";
-      hint = "";
+      hint = [];
       currentWord = '';
       currentWordList = [];
       actualWordList = [];
@@ -55,8 +59,68 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
+
   showHint() {
-    showD
+    showModalBottomSheet(
+        context: context,
+        builder:(context)
+    {
+      return Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 5,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.grey[500]
+              ),
+            ),
+            SizedBox(height: 20,),
+            Icon(Icons.lightbulb_outline, color: Colors.yellow, size: 50,),
+            SizedBox(height: 30,),
+            hintAccess ? Container() : Text('You ran out of hints for the word'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: currentWordList.map((letter) {
+                return GestureDetector(
+                  onTap: () {
+                    int divisor = (letter.length / 2).floor();
+                    if(hint.length<=divisor){
+                      hint.add(letter);
+                    } else {
+                      setState(() {
+                        hintAccess = false;
+                      });
+                    }
+                  },
+                  child: Container(
+                    width: 20,
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Text(
+                            visibleList.contains(letter) &&
+                                hint.contains(letter) ? letter : " ",
+                            style: TextStyle(fontSize: 25),
+                          ),
+                          Text(
+                            '_',
+                            style: TextStyle(height: 0, fontSize: 25),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+      );
+    }
+
+    );
   }
 
   @override
@@ -82,6 +146,7 @@ class _GameScreenState extends State<GameScreen> {
                 IconButton(
                   onPressed: () {
                     print('hint');
+                    showHint();
                   },
                   icon: Icon(
                     Icons.lightbulb_outline,
@@ -215,6 +280,24 @@ class _GameScreenState extends State<GameScreen> {
     //TODO this should show game over dialog
     print('game over');
     recordHighScore();
+    showDialog(
+        context: context,
+      child: Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(7)
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.warning,color: Colors.red,size: 35,),
+              Text('GAME OVER!',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),)
+            ],
+          ),
+        ),
+      )
+    );
   }
 
   void recordHighScore() async {
