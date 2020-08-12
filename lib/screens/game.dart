@@ -56,6 +56,7 @@ class _GameScreenState extends State<GameScreen> {
       visibleList = [];
       wrongWordList = [];
       hangManLevel = 0;
+      hintAccess=true;
     });
   }
 
@@ -65,163 +66,237 @@ class _GameScreenState extends State<GameScreen> {
         context: context,
         builder:(context)
     {
-      return Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              height: 5,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Colors.grey[500]
-              ),
-            ),
-            SizedBox(height: 20,),
-            Icon(Icons.lightbulb_outline, color: Colors.yellow, size: 50,),
-            SizedBox(height: 30,),
-            hintAccess ? Container() : Text('You ran out of hints for the word'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: currentWordList.map((letter) {
-                return GestureDetector(
-                  onTap: () {
-                    int divisor = (letter.length / 2).floor();
-                    if(hint.length<=divisor){
-                      hint.add(letter);
-                    } else {
-                      setState(() {
-                        hintAccess = false;
-                      });
-                    }
-                  },
-                  child: Container(
-                    width: 20,
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Text(
-                            visibleList.contains(letter) &&
-                                hint.contains(letter) ? letter : " ",
-                            style: TextStyle(fontSize: 25),
-                          ),
-                          Text(
-                            '_',
-                            style: TextStyle(height: 0, fontSize: 25),
-                          )
-                        ],
-                      ),
-                    ),
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Container(
+            height: 400,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 20,),
+                Container(
+                  height: 5,
+                  width: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.grey[500]
                   ),
-                );
-              }).toList(),
+                ),
+                SizedBox(height: 20,),
+                Icon(Icons.lightbulb_outline, color: Colors.yellowAccent, size: 50,),
+                SizedBox(height: 10,),
+                Text('Hint',style: TextStyle(color: Colors.black,fontSize: 19,fontWeight: FontWeight.bold),),
+                SizedBox(height: 30,),
+                hintAccess ? Container() : Text('You ran out of hints for the word'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: currentWordList.map((letter) {
+                    return GestureDetector(
+                      onTap: () {
+                        int divisor = (actualWordList.length / 2).round();
+                        print(divisor);
+                        if(hint.length<divisor){
+
+                          setState(() {
+                            hint.add(letter);
+                          });
+                        } else {
+                          setState(() {
+                            hintAccess = false;
+                          });
+                        }
+                      },
+                      child: Container(
+                        width: 20,
+                        child: Center(
+                          child: Column(
+                            children: [
+                              Text(
+                                hint.contains(letter) ? letter : " ",
+                                style: TextStyle(fontSize: 35),
+                              ),
+                              Text(
+                                '_',
+                                style: TextStyle(height: 0, fontSize: 35),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+                SizedBox(height: 30,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Tap missing letters to get hint, you are only allowed certain number of letter so pick wisely.', textAlign: TextAlign.center, style: TextStyle(color: Colors.black,fontSize: 17),),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        }
       );
     }
 
     );
   }
 
+  exitDialog() {
+    showDialog(context: context,
+      child: Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8)
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Are you sure you want to exit the game?', textAlign: TextAlign.center,style: TextStyle(fontSize: 20),),
+              SizedBox(height: 10,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)
+                    ),
+                    color: Colors.black,
+                    onPressed: (){
+                      Navigator.pop(context);
+                    },
+                    child: Text('No',style: TextStyle(color: Colors.white),),
+                  ),
+                  RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)
+                    ),
+                    color: Colors.black,
+                    onPressed: (){
+                      recordHighScore();
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+
+                    },
+                    child: Text('Yes',style: TextStyle(color: Colors.white),),
+                  )
+
+                ],
+              )
+            ],
+          ),
+        ),
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 40,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return WillPopScope(
+
+      onWillPop: () {
+        //TODO show confirmation dialog
+        exitDialog();
+        return Future.value(false);
+      },
+    child: Scaffold(
+          body: Container(
+            child: Column(
               children: [
-                Text(
-                  'Lives: $lives',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                SizedBox(
+                  height: 40,
                 ),
-                Text(
-                  'Scores: $highScore',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      'Lives: $lives',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'Scores: $highScore',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        print('hint');
+                        showHint();
+                      },
+                      icon: Icon(
+                        Icons.lightbulb_outline,
+                        color: Colors.black,
+                      ),
+                    )
+                  ],
                 ),
-                IconButton(
-                  onPressed: () {
-                    print('hint');
-                    showHint();
-                  },
-                  icon: Icon(
-                    Icons.lightbulb_outline,
-                    color: Colors.black,
+                Image.asset('assets/images/$hangMan.jpg'),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: currentWordList.map((letter) {
+                    return Container(
+                      width: 20,
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              visibleList.contains(letter) ? letter : " ",
+                              style: TextStyle(fontSize: 25),
+                            ),
+                            Text(
+                              '_',
+                              style: TextStyle(height: 0, fontSize: 25),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Flexible(
+                  child: GridView.count(
+                    crossAxisCount: 8,
+                    children: keyboardLetters.map((letter) {
+                      return GestureDetector(
+                        onTap: () {
+                          if (!visibleList.contains(letter)) {
+                            validateLetter(letter);
+                          } else {
+                            showFalseLetterAdded(letter);
+                          }
+                        },
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: visibleList.contains(letter)
+                                  ? Colors.grey[300]
+                                  : wrongWordList.contains(letter)
+                                      ? Colors.red
+                                      : Colors.white,
+                              border: Border.all(color: Colors.black)),
+                          child: Center(
+                            child: Text(
+                              letter.toUpperCase(),
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
                 )
               ],
             ),
-            Image.asset('assets/images/$hangMan.jpg'),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: currentWordList.map((letter) {
-                return Container(
-                  width: 20,
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Text(
-                          visibleList.contains(letter) ? letter : " ",
-                          style: TextStyle(fontSize: 25),
-                        ),
-                        Text(
-                          '_',
-                          style: TextStyle(height: 0, fontSize: 25),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Flexible(
-              child: GridView.count(
-                crossAxisCount: 8,
-                children: keyboardLetters.map((letter) {
-                  return GestureDetector(
-                    onTap: () {
-                      if (!visibleList.contains(letter)) {
-                        validateLetter(letter);
-                      } else {
-                        showFalseLetterAdded(letter);
-                      }
-                    },
-                    child: Container(
-                      width: 30,
-                      height: 30,
-                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: visibleList.contains(letter)
-                              ? Colors.grey[300]
-                              : wrongWordList.contains(letter)
-                                  ? Colors.red
-                                  : Colors.white,
-                          border: Border.all(color: Colors.black)),
-                      child: Center(
-                        child: Text(
-                          letter.toUpperCase(),
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            )
-          ],
-        ),
-      ),
+          ),
+        )
     );
   }
 
@@ -280,6 +355,7 @@ class _GameScreenState extends State<GameScreen> {
     //TODO this should show game over dialog
     print('game over');
     recordHighScore();
+    initWord();
     showDialog(
         context: context,
       child: Dialog(
@@ -287,11 +363,11 @@ class _GameScreenState extends State<GameScreen> {
           borderRadius: BorderRadius.circular(7)
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.warning,color: Colors.red,size: 35,),
+              Icon(Icons.warning,color: Colors.red,size: 50,),
               Text('GAME OVER!',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),)
             ],
           ),
