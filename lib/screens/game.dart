@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hangman_game/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GameScreen extends StatefulWidget {
   @override
@@ -54,6 +55,10 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
+  showHint() {
+    showD
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,8 +71,14 @@ class _GameScreenState extends State<GameScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text('Lives: $lives',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                Text('Scores: $highScore',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                Text(
+                  'Lives: $lives',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'Scores: $highScore',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
                 IconButton(
                   onPressed: () {
                     print('hint');
@@ -175,12 +186,10 @@ class _GameScreenState extends State<GameScreen> {
         setState(() {
           lives -= 1;
         });
-
         if (lives == 0) {
           showGameOver();
         } else {
           addBodyPart(number: 10);
-
           Future.delayed(Duration(seconds: 1)).then((value) {
             initWord();
           });
@@ -203,7 +212,22 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void showGameOver() {
+    //TODO this should show game over dialog
     print('game over');
+    recordHighScore();
+  }
+
+  void recordHighScore() async {
+    SharedPreferences local = await SharedPreferences.getInstance();
+    if(local.getStringList('highScore') == null){
+      List<String> scores = [];
+      scores.add(highScore.toString());
+      local.setStringList('highScore', scores);
+    } else {
+      List<String> scores = local.getStringList('highScore');
+      scores.add(highScore.toString());
+      local.setStringList('highScore', scores);
+    }
   }
 
   void addBodyPart({int number}) {

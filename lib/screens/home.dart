@@ -40,6 +40,9 @@ class HomeScreen extends StatelessWidget {
                 color: Colors.black,
               ),
               child: RaisedButton(
+                onPressed: (){
+                  Navigator.pushNamed(context, 'scorePage');
+                },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)
                 ),
