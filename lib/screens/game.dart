@@ -56,150 +56,173 @@ class _GameScreenState extends State<GameScreen> {
       visibleList = [];
       wrongWordList = [];
       hangManLevel = 0;
-      hintAccess=true;
+      hintAccess = true;
     });
   }
-
 
   showHint() {
     showModalBottomSheet(
         context: context,
-        builder:(context)
-    {
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return Container(
-            height: 400,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(height: 20,),
-                Container(
-                  height: 5,
-                  width: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.grey[500]
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return Container(
+              height: 400,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
-                SizedBox(height: 20,),
-                Icon(Icons.lightbulb_outline, color: Colors.yellowAccent, size: 50,),
-                SizedBox(height: 10,),
-                Text('Hint',style: TextStyle(color: Colors.black,fontSize: 19,fontWeight: FontWeight.bold),),
-                SizedBox(height: 30,),
-                hintAccess ? Container() : Text('You ran out of hints for the word'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: currentWordList.map((letter) {
-                    return GestureDetector(
-                      onTap: () {
-                        int divisor = (actualWordList.length / 2).round();
-                        print(divisor);
-                        if(hint.length<divisor){
-
-                          setState(() {
-                            hint.add(letter);
-                          });
-                        } else {
-                          setState(() {
-                            hintAccess = false;
-                          });
-                        }
-                      },
-                      child: Container(
-                        width: 20,
-                        child: Center(
-                          child: Column(
-                            children: [
-                              Text(
-                                hint.contains(letter) ? letter : " ",
-                                style: TextStyle(fontSize: 35),
-                              ),
-                              Text(
-                                '_',
-                                style: TextStyle(height: 0, fontSize: 35),
-                              )
-                            ],
+                  Container(
+                    height: 5,
+                    width: 60,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.grey[500]),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Icon(
+                    Icons.lightbulb_outline,
+                    color: Colors.yellowAccent,
+                    size: 50,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Hint',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 19,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  hintAccess
+                      ? Container()
+                      : Text('You ran out of hints for the word'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: currentWordList.map((letter) {
+                      return GestureDetector(
+                        onTap: () {
+                          int divisor = (actualWordList.length / 2).round();
+                          print(divisor);
+                          if (hint.length < divisor) {
+                            setState(() {
+                              hint.add(letter);
+                            });
+                          } else {
+                            setState(() {
+                              hintAccess = false;
+                            });
+                          }
+                        },
+                        child: Container(
+                          width: 30,
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  hint.contains(letter) ? letter : " ",
+                                  style: TextStyle(fontSize: 35),
+                                ),
+                                Text(
+                                  '_',
+                                  style: TextStyle(height: 0, fontSize: 35),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-                SizedBox(height: 30,),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('Tap missing letters to get hint, you are only allowed certain number of letter so pick wisely.', textAlign: TextAlign.center, style: TextStyle(color: Colors.black,fontSize: 17),),
-                ),
-              ],
-            ),
-          );
-        }
-      );
-    }
-
-    );
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Tap missing letters to get hint, you are only allowed certain number of letter so pick wisely.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.black, fontSize: 17),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          });
+        });
   }
 
   exitDialog() {
-    showDialog(context: context,
-      child: Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8)
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Are you sure you want to exit the game?', textAlign: TextAlign.center,style: TextStyle(fontSize: 20),),
-              SizedBox(height: 10,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)
+    showDialog(
+        context: context,
+        child: Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Are you sure you want to exit the game?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)),
+                      color: Colors.black,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'No',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
-                    color: Colors.black,
-                    onPressed: (){
-                      Navigator.pop(context);
-                    },
-                    child: Text('No',style: TextStyle(color: Colors.white),),
-                  ),
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)
-                    ),
-                    color: Colors.black,
-                    onPressed: (){
-                      recordHighScore();
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-
-                    },
-                    child: Text('Yes',style: TextStyle(color: Colors.white),),
-                  )
-
-                ],
-              )
-            ],
+                    RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)),
+                      color: Colors.black,
+                      onPressed: () {
+                        recordHighScore();
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Yes',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
-        ),
-      )
-    );
+        ));
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-
-      onWillPop: () {
-        //TODO show confirmation dialog
-        exitDialog();
-        return Future.value(false);
-      },
-    child: Scaffold(
+        onWillPop: () {
+          //TODO show confirmation dialog
+          exitDialog();
+          return Future.value(false);
+        },
+        child: Scaffold(
           body: Container(
             child: Column(
               children: [
@@ -211,11 +234,13 @@ class _GameScreenState extends State<GameScreen> {
                   children: [
                     Text(
                       'Lives: $lives',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       'Scores: $highScore',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     IconButton(
                       onPressed: () {
@@ -273,7 +298,8 @@ class _GameScreenState extends State<GameScreen> {
                         child: Container(
                           width: 30,
                           height: 30,
-                          margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: visibleList.contains(letter)
@@ -296,8 +322,7 @@ class _GameScreenState extends State<GameScreen> {
               ],
             ),
           ),
-        )
-    );
+        ));
   }
 
   void validateLetter(String letter) {
@@ -308,8 +333,11 @@ class _GameScreenState extends State<GameScreen> {
         });
         print(visibleList.length == currentWordList.length);
         if (visibleList.length == actualWordList.length) {
-          initWord();
-          addScore();
+          showCorrectWordDialog(failed: true);
+          Future.delayed(Duration(seconds: 3)).then((value) {
+            initWord();
+            addScore();
+          });
         }
       } else {
         showFalseLetterAdded(letter);
@@ -323,14 +351,21 @@ class _GameScreenState extends State<GameScreen> {
     if (lives != 0) {
       if (wrongWordList.length >= 6) {
         // game over
+
         setState(() {
           lives -= 1;
         });
         if (lives == 0) {
-          showGameOver();
+          showCorrectWordDialog(failed: true);
+          Future.delayed(Duration(seconds: 3)).then((value) {
+            Navigator.pop(context);
+            showGameOver();
+          });
         } else {
           addBodyPart(number: 10);
-          Future.delayed(Duration(seconds: 1)).then((value) {
+          showCorrectWordDialog(failed: true);
+          Future.delayed(Duration(seconds: 3)).then((value) {
+            Navigator.pop(context);
             initWord();
           });
         }
@@ -351,6 +386,27 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
+  showCorrectWordDialog({bool failed = false}) {
+    showDialog(context: context,
+      barrierDismissible: false,
+      child: Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+       child: Padding(
+         padding: const EdgeInsets.all(10.0),
+         child: Column(
+           mainAxisSize: MainAxisSize.min,
+           children: [
+             Text(failed ? 'The correct word is...' : 'You got it!',style: TextStyle(color: Colors.black54,fontSize: 16),),
+             SizedBox(height: 20,),
+             Text(currentWord,style: TextStyle(color: Colors.green,fontSize: 18, fontWeight: FontWeight.bold),),
+             SizedBox(height: 20,),
+           ],
+         ),
+       ),
+      )
+    );
+  }
+
   void showGameOver() {
     //TODO this should show game over dialog
     print('game over');
@@ -358,27 +414,31 @@ class _GameScreenState extends State<GameScreen> {
     initWord();
     showDialog(
         context: context,
-      child: Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(7)
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.warning,color: Colors.red,size: 50,),
-              Text('GAME OVER!',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),)
-            ],
+        child: Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.warning,
+                  color: Colors.red,
+                  size: 50,
+                ),
+                Text(
+                  'GAME OVER!',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                )
+              ],
+            ),
           ),
-        ),
-      )
-    );
+        ));
   }
 
   void recordHighScore() async {
     SharedPreferences local = await SharedPreferences.getInstance();
-    if(local.getStringList('highScore') == null){
+    if (local.getStringList('highScore') == null) {
       List<String> scores = [];
       scores.add(highScore.toString());
       local.setStringList('highScore', scores);
