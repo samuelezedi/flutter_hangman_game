@@ -4,7 +4,7 @@ A simple and efficient Hangman game built with flutter
 will soon be placed on playstore and appstore, for now you can fork or clone the code
 and pull requests are welcomed.
 
-| Home | Select API | Shortener Notif. | link Qrcode | HomeScreen List |
+| Game Screen | Entering Words | Word Hint | Correct word | Game over |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| <image width="200" src="https://raw.githubusercontent.com/samuelezedi/uree_url_shortener/master/assets/images/uree-1.png"> | <image width="200" src="https://raw.githubusercontent.com/samuelezedi/uree_url_shortener/master/assets/images/uree-2.png"> | <image width="200" src="https://raw.githubusercontent.com/samuelezedi/uree_url_shortener/master/assets/images/uree-3.png"> | <image width="200" src="https://raw.githubusercontent.com/samuelezedi/uree_url_shortener/master/assets/images/uree-4.png"> | <image width="200" src="https://raw.githubusercontent.com/samuelezedi/uree_url_shortener/master/assets/images/uree-5.png"> |
+| <image width="200" src="https://raw.githubusercontent.com/samuelezedi/flutter_hangman_game/blob/master/assets/shots/1.png"> | <image width="200" src="https://raw.githubusercontent.com/samuelezedi/flutter_hangman_game/blob/master/assets/shots/2.png"> | <image width="200" src="https://raw.githubusercontent.com/samuelezedi/flutter_hangman_game/blob/master/assets/shots/3.png"> | <image width="200" src="https://raw.githubusercontent.com/samuelezedi/flutter_hangman_game/blob/master/assets/shots/4.jpg"> | <image width="200" src="https://raw.githubusercontent.com/samuelezedi/flutter_hangman_game/blob/master/assets/shots/5.png"> |
 
